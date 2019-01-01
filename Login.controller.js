@@ -5,52 +5,78 @@ sap.ui.controller("logintestsoftware.Login", {
 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 * @memberOf logintestsoftware.Login
 */
-	onInit: function() {
-		
-//		var sServiceUrl = "https://r51z.ucc.ovgu.de/sap/opu/odata/SAP/ZPROJEKT2019_N01_SRV_01";
-//		var oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
-//		var oJsonModel = new sap.ui.model.json.JSONModel();
+//	onInit: function() {
 //		
-//		oModel.read("/GatewayService01Set", null, null, true, function(oData,response) {
-//			
-//			oJsonModel.setData(oData);
-//			
-//		});
-//		sap.ui.getCore().setModel(oJsonModel);
+		
 		
 
-//		var oModel = new sap.ui.model.odata.ODataModel("https://r51z.ucc.ovgu.de/sap/opu/odata/SAP/ZPROJEKT2019_N01_SRV_01", false);
+//		
+//
+//	}
+//	
+	login: function(){
+		
+		//v4 Data binding test
+																
+//		var sServiceUrl = "https://r51z.ucc.ovgu.de/sap/opu/odata/SAP/ZPROJEKT2019_N01_SRV_01/";
+//		var oModel = new sap.ui.model.odata.v4.ODataModel({
+//			  serviceUrl: sServiceUrl,
+//			  synchronizationMode: "None",
+//			  updateGroupId : "$direct",
+//			  groupId : "$direct",
+//			});
+//		
 //		sap.ui.getCore().setModel(oModel);
-		
-		
-//		const Http = new XMLHttpRequest();
-//		const url='https://r51z.ucc.ovgu.de/sap/opu/odata/SAP/ZPROJEKT2019_N01_SRV_01/$metadata';
-//		Http.onreadystatechange=(e)=>{
-//		console.log(Http.responseText)
-//		}
-//		Http.open("GET", url);
-//		Http.send();
-		
-			
+//		
+//		var oUser = this.getView().byId("User").getValue();
+//		var oPwd  = this.getView().byId("Pwd").getValue();
+//		
+//		var oContext = oModel.bindContext("/Test(...)");
+//		oContext.setParameter("IBenutzername" , oUser);
+//		oContext.setParameter("IPasswort" , oPwd);
+//		oContext.execute();
+
+			//mit v2 und dirty quick chrome --disable-web-security --user-data-dir -> POST is forbidden
+			//https://cors-anywhere.herokuapp.com/
 		var sServiceUrl = "https://r51z.ucc.ovgu.de/sap/opu/odata/SAP/ZPROJEKT2019_N01_SRV_01/";
 		
-		var oModel = new sap.ui.model.odata.v4.ODataModel({
+		var oModel = new sap.ui.model.odata.v2.ODataModel({
 			  serviceUrl: sServiceUrl,
-			  synchronizationMode: "None"
+//			  synchronizationMode: "None"
 			});
-
-//        var oModel = new sap.ui.model.odata.v4.ODataModel(sServiceUrl, { tokenHandling: false, headers: {
-//            "Access-Control-Allow-Origin": "*.ovgu.de"
-//        }});
-        
-//        ODataModel(url, {
-//        	  tokenHandling: false
-//        	})
-
-        sap.ui.getCore().setModel(oModel);
 		
-
+		oModel.setUseBatch(false);
+		
+		sap.ui.getCore().setModel(oModel);
+		
+		var oUser = this.getView().byId("User").getValue();
+		var oPwd  = this.getView().byId("Pwd").getValue();
+		
+		var oEntry = {};
+		oEntry.IBenutzername = oUser;
+		oEntry.IPasswort	 = oPwd;
+		oEntry.EResultString = "";
+		
+//		jQuery.sap.require("sap.ui.commons.MessageBox");
+		console.log(oModel.create("/GatewayService01Set", oEntry)); //, null, function () {
+		
+//		console.log(oModel);
+		
+//
+//			  sap.ui.commons.MessageBox.alert("Success!") ;
+//
+//			  }, function () {
+//
+//			  sap.ui.commons.MessageBox.alert("Error!");
+//
+//			  });
+		
 	},
+	});
+//		
+
+//	}
+
 
 /**
 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
@@ -67,6 +93,8 @@ sap.ui.controller("logintestsoftware.Login", {
 * @memberOf logintestsoftware.Login
 */
 //	onAfterRendering: function() {
+//		
+//		var name = this.refs.text.value();
 //
 //	},
 
@@ -78,4 +106,12 @@ sap.ui.controller("logintestsoftware.Login", {
 //
 //	}
 
-});
+
+
+//sap.ui.define(["sap/ui/model/odata/v4/ODataModel"], function (ODataModel) {
+//    var oModel = new ODataModel({
+//        serviceUrl : "https://r51z.ucc.ovgu.de/sap/opu/odata/SAP/ZPROJEKT2019_N01_SRV_01/",
+//        synchronizationMode : "None",
+//        updateGroupId : "myAppUpdateGroup"
+//    });
+//});
